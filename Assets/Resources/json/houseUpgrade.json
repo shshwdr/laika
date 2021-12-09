@@ -1,0 +1,41 @@
+{
+    "allUpgrade":
+    [
+      {
+        "name": "empty",
+        "displayName":"An empty place",
+        "description":"Nothing here. Require {0}to upgrade.",
+        "items":[{"Key":"leave","Value":3}],
+        "buildTime":2
+      },
+      {
+        "name": "leave",
+        "displayName":"A den with leaves",
+        "description":"I can sleep here but it is fairly cold. Require {0}to upgrade.",
+        "items":[{"Key":"leave","Value":3},{"Key":"stick","Value":3}],
+        "buildTime":2
+      },
+      {
+        "name": "stick",
+        "displayName":"a kennel with sticks",
+        "description":"At least it has a roof now, time to build a real house. Require {0}to upgrade.",
+        "items":[{"Key":"stick","Value":3},{"Key":"wood","Value":3}],
+        "buildTime":2
+      },
+      {
+        "name": "wood",
+        "displayName":"a wooden house",
+        "description":"Looks great! But winter is quite dry and it will better to have a rock house. Require {0}to upgrade.",
+        "items":[{"Key":"wood","Value":3},{"Key":"rock","Value":4}],
+        "buildTime":2
+      },
+      {
+        "name": "rock",
+        "displayName":"a rock house",
+        "description":"The perfect house you can expect to have for the winter!",
+        "items":[],
+        "buildTime":2,
+        "isMax":true
+      }
+    ]
+  }

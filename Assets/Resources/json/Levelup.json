@@ -1,0 +1,20 @@
+{
+    "levelup":[
+      {
+        "name":"1",
+        "displayName":"Shacky Bathhouse",
+        "description":"Shacky Bathhouse",
+        "levelUpValue":100,
+        "nextLevel":"2"
+      },
+      {
+        "name":"2",
+        "displayName":"Simple Bathhouse",
+        "description":"Simple Bathhouse",
+        "levelUpValue":200,
+        "unlockItems":[
+          "Axe"
+        ]
+      }
+    ]
+  }

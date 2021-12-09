@@ -1,0 +1,41 @@
+{
+    "allRoom":
+    [
+      {
+        "name": "bedroom",
+        "displayName":"Bedroom",
+        "description":"Room for customer to sleep",
+        "requireResources":[
+          {"key":"stick","amount":3}
+        ],
+        "regions":["house"]
+      },
+      {
+        "name": "shop",
+        "displayName":"Shop",
+        "description":"Room for customer to buy itmes",
+        "requireResources":[
+          {"key":"stick","amount":3}
+        ],
+        "regions":["house","garden"]
+      },
+      {
+        "name": "restaurant",
+        "displayName":"Restaurant",
+        "description":"Room for customer to eat",
+        "requireResources":[
+          {"key":"stick","amount":3}
+        ],
+        "regions":["house","garden"]
+      },
+      {
+        "name": "spring",
+        "displayName":"Spring",
+        "description":"A warm spring",
+        "requireResources":[
+          {"key":"stone","amount":3}
+        ],
+        "regions":["garden"]
+      }
+    ]
+  }

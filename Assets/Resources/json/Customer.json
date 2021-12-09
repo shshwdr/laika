@@ -1,0 +1,23 @@
+{
+    "generalCustomer":
+    [
+      {
+        "name": "villageGirl",
+        "displayName":"Village Girl",
+        "description":"Village Girl",
+        "favoriteItems":[
+          {"key":"saltSpringWater","amount":10},
+          {"key":"duck","amount":5}
+        ]
+      },
+      {
+        "name": "slime",
+        "displayName":"Slime",
+        "description":"Slime",
+        "favoriteItems":[
+          {"key":"springWater","amount":10},
+          {"key":"bed","amount":5}
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,367 @@
+{
+    "allQuest":
+    [
+      {
+        "name": "cleanLeaves",
+        "displayName":"Clean Leaves",
+        "returnNPC":"leader",
+        "reward":[
+          {
+            "type":"item",
+            "subtype":"rake",
+            "amount":1
+          },{
+            "type":"friendship",
+            "subtype":"leader",
+            "amount":10
+          }
+        ],
+        "entries":[
+          
+          {
+            "amount":2,
+            "type":"questItemAmount",
+            "subtype":"leave",
+            "text":"Clean {0} / {1} leaves"
+          }
+        ]
+      },
+      {
+        "name": "cleanLeaves2",
+        "displayName":"Clean Leaves",
+        "returnNPC":"leader",
+        "activateNext":"cleanLeaves2",
+        "reward":[
+          {
+            "type":"item",
+            "subtype":"rake",
+            "amount":1
+          },{
+            "type":"friendship",
+            "subtype":"leader",
+            "amount":10
+          }
+        ],
+        "entries":[
+          
+          {
+            "amount":4,
+            "type":"questItemAmount",
+            "subtype":"leave",
+            "text":"Clean {0} / {1} leaves"
+          }
+        ]
+      },
+      
+      {
+        "name": "meetEveryone",
+        "displayName":"Meet Everyone",
+        "returnNPC":"leader",
+        "grantRequest":[],
+        "reward":[
+        ],
+        "entries":[
+          {
+            "amount":7,
+            "type":"variableAmount",
+            "subtype":"meetVillagers",
+            "text":"Meet {0} / {1} villagers"
+          }
+        ]
+      },{
+        "name": "helpEveryone",
+        "displayName":"Make Everyone happy",
+        "returnNPC":"leader",
+        
+        "grantRequest":[
+          {
+            "type":"finishQuest",
+            "subtype":"meetEveryone"
+          }
+        ],
+        "reward":[
+        ],
+        "entries":[
+          {
+            "amount":8,
+            "type":"variableAmount",
+            "subtype":"helpVillagers",
+            "text":"Solve {0} / {1} villagers' problem"
+          },
+          {
+            "amount":8,
+            "type":"fullFriendshipAmount",
+            "subtype":"happyVillagers",
+            "text":"Make {0} / {1} villagers Happy"
+          }
+        ]
+      },
+      
+      {
+        "name": "upgradeHouse",
+        "displayName":"Build a house to live",
+        "returnNPC":"leader",
+        "reward":[
+        ],
+        "entries":[
+          {
+            "amount":5,
+            "type":"questItemAmount",
+            "subtype":"houseUpgradeLevel",
+            "text":"Upgrade House {0} / {1}"
+          }
+        ]
+      },
+      
+      {
+        "name": "kite",
+        "displayName":"Get kite from the tree",
+        "returnNPC":"tuuli",
+        "grantRequest":[
+          {
+            "type":"finishQuest",
+            "subtype":"meetEveryone"
+          }
+        ],
+        "grantBehavior":[
+          {
+            "type":"showItem",
+            "subtype":"quest_kite"
+          }
+        ],
+        "reward":[
+        ],
+        "entries":[
+          {
+            "amount":5,
+            "type":"inventoryAmount",
+            "subtype":"kite",
+            "text":"Get kite from the tree"
+          }
+        ]
+      },
+      
+      {
+        "name": "forestSound",
+        "displayName":"Investigate forest sound",
+        "returnNPC":"hikeguy",
+        "grantRequest":[
+          {
+            "type":"friendship",
+            "subtype":"hikeguy",
+            "amount":30
+          }
+        ],
+        "activeBehavior":[
+          {
+            "type":"showNPC",
+            "subtype":"bear"
+          }
+        ],
+        "reward":[
+        ],
+        "entries":[
+          {
+            "type":"metNPC",
+            "subtype":"bear",
+            "text":"Investigate forest around noon"
+          }
+        ]
+      },
+      {
+        "name": "treeSound",
+        "displayName":"Investigate what's over the falling tree",
+        "returnNPC":"leader",
+        "grantRequest":[
+          {
+            "type":"finishQuest",
+            "subtype":"kite"
+          }
+        ],
+        "reward":[
+        ],
+        "entries":[
+          {
+            "type":"inventoryAmount",
+            "subtype":"chainsaw",
+            "text":"Get Chainsaw from Everest"
+          },
+          {
+            "type":"metNPC",
+            "subtype":"salamander",
+            "text":"Cut the log and explore"
+          }
+        ]
+      },
+      
+      {
+        "name": "whoStolePumpkin",
+        "displayName":"Find out who stole the PumpkinG",
+        "returnNPC":"farmer",
+        "activeBehavior":[
+          {
+            "type":"showItem",
+            "subtype":"footprint1"
+          },
+          {
+            "type":"showItem",
+            "subtype":"footprint2"
+          },
+          {
+            "type":"showItem",
+            "subtype":"footprint3"
+          }
+        ],
+        "reward":[
+          {
+          "type":"item",
+          "subtype":"saw",
+          "amount":1
+        },{
+          "type":"friendship",
+          "subtype":"farmer",
+          "amount":10
+        }
+        ],
+        "entries":[
+          {
+            "type":"variableAmount",
+            "subtype":"foundFootprint",
+            "amount":3,
+            "text":"Collect footprint {0} / {1}"
+          },
+          {
+            "type":"variableAmount",
+            "subtype":"talkedToSukiAboutPumpking",
+            "amount":1,
+            "text":"Talk to suspect",
+            "unlockByLast":true
+          }
+        ]
+      },
+      {
+        "name": "surviveWinter",
+        "displayName":"Help Ainsley survive the winter",
+        "returnNPC":"bear",
+        "grantRequest":[
+          {
+            "type":"friendship",
+            "subtype":"bear",
+            "amount":30
+          }
+        ],
+        "activeBehavior":[
+        ],
+        "reward":[
+          {
+            "type":"item",
+            "subtype":"pickaxe",
+            "amount":1
+          },{
+            "type":"itemRemove",
+            "subtype":"kite",
+            "amount":1
+          },{
+          "type":"friendship",
+          "subtype":"bear",
+          "amount":10
+        }
+        ],
+        "entries":[
+          {
+            "type":"inventoryAmount",
+            "subtype":"fishCake",
+            "amount":1,
+            "text":"Make food contains fish {0} / {1}"
+          }
+        ]
+      },
+      {
+        "name": "anotherNocturnal",
+        "displayName":"Find a friend for Moncha",
+        "returnNPC":"kiwi",
+        "grantRequest":[
+          {
+            "type":"friendship",
+            "subtype":"kiwi",
+            "amount":30
+          }
+        ],
+        "activeBehavior":[
+        ],
+        "reward":[
+          {
+          "type":"item",
+          "subtype":"fishrod",
+          "amount":1
+        },{
+          "type":"friendship",
+          "subtype":"kiwi",
+          "amount":10
+        }
+        ],
+        "entries":[
+          {
+            "type":"variableAmount",
+            "subtype":"anotherNocturnal",
+            "amount":1,
+            "text":"Find someone want to hangout at night"
+          }
+        ]
+      },
+      {
+        "name": "anotherJob",
+        "displayName":"Find a safe job for Nova",
+        "returnNPC":"legguy",
+        "grantRequest":[
+          {
+            "type":"friendship",
+            "subtype":"legguy",
+            "amount":30
+          },
+          
+          {
+            "type":"finishQuest",
+            "subtype":"treeSound"
+          }
+        ],
+        "activeBehavior":[
+        ],
+        "reward":[{
+          "type":"friendship",
+          "subtype":"legguy",
+          "amount":10
+        }
+        ],
+        "entries":[
+          {
+            "type":"variableAmount",
+            "subtype":"anotherJob",
+            "amount":1,
+            "text":"Anyone want to change job?"
+          }
+        ]
+      },
+      {
+        "name": "findAFriend",
+        "displayName":"Find a friend for Elam",
+        "returnNPC":"salamander",
+        "activeBehavior":[
+        ],
+        "reward":[{
+          "type":"friendship",
+          "subtype":"salamander",
+          "amount":10
+        }
+        ],
+        "entries":[
+          {
+            "type":"variableAmount",
+            "subtype":"aFriend",
+            "amount":1,
+            "text":"Anyone want a friend?"
+          }
+        ]
+      }
+    ]
+  }

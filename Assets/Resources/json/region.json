@@ -1,0 +1,15 @@
+{
+    "allRegion":
+    [
+      {
+        "name": "house",
+        "displayName":"Bathhouse",
+        "description":"Room for customer to sleep"
+      },
+      {
+        "name": "garden",
+        "displayName":"Garden",
+        "description":"Room for customer to buy itmes"
+      }
+    ]
+  }

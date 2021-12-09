@@ -1,0 +1,52 @@
+{
+    "allMainItem":
+    [
+      
+      {
+        "name": "apple",
+        "displayName":"apple",
+        "catelog":"bed",
+        "isUnlocked":true,
+        "description":"apple",
+        "earning":10
+      },{
+        "name": "chips",
+        "displayName":"chips",
+        "catelog":"bed",
+        "isUnlocked":true,
+        "description":"apple",
+        "earning":15
+      },{
+        "name": "cake",
+        "displayName":"cake",
+        "catelog":"bed",
+        "isUnlocked":true,
+        "description":"apple",
+        "earning":20
+      }
+    ],
+    "allDecorations":[
+      {
+        "name": "apple",
+        "displayName":"apple",
+        "catelog":"bed",
+        "isUnlocked":true,
+        "description":"apple",
+        "earning":10
+      },{
+        "name": "chips",
+        "displayName":"chips",
+        "catelog":"bed",
+        "isUnlocked":true,
+        "description":"apple",
+        "earning":15
+      },{
+        "name": "cake",
+        "displayName":"cake",
+        "catelog":"bed",
+        "isUnlocked":true,
+        "description":"apple",
+        "earning":20
+      }
+    ]
+  }
