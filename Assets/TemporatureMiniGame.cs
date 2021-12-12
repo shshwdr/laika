@@ -4,15 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TemporatureMiniGame : MonoBehaviour
+public class TemporatureMiniGame : MiniGame
 {
     public Image meter;
-    public Image finishMeter;
+
+    public Sprite inRangeHook;
+    public Sprite outRangeHook;
 
     public TMP_Text buttonName;
     public Image fish;
     public Image hook;
-    public Image progress;
 
 
     float fishDestination;
@@ -33,13 +34,14 @@ public class TemporatureMiniGame : MonoBehaviour
     [SerializeField] float hookGravityPower = 0.005f;
 
 
-    float hookProgress;
-    [SerializeField] float hookPower = 0.5f;
-    [SerializeField] float hookProgressDegradationPower = 0.1f;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        startString = "Start adjust temporature, press B to adjust";
+        endString = "Adjust temporature succeed!";
+        //startMinigame();
         resizeHook();
     }
 
@@ -51,10 +53,31 @@ public class TemporatureMiniGame : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isFinished)
+        {
+            return;
+        }
         moveFish();
         moveHook();
         progressCheck();
     }
+
+    public IEnumerator waitAndRestart()
+    {
+        yield return new WaitForSeconds(5f);
+
+
+        progressAdd -= 0.05f;
+        progressAdd = Mathf.Max(progressAdd, progressReduce* 2);
+        hookSize -= 5;
+        hookSize = Mathf.Max(hookSize, 20);
+
+        resizeHook();
+
+        startMinigame();
+
+    }
+
 
     void progressCheck()
     {
@@ -62,16 +85,15 @@ public class TemporatureMiniGame : MonoBehaviour
         float hookMax = hookPosition + hookSize/2;
         if(hookMin<=fishPosition && hookMax >= fishPosition)
         {
-            hookProgress += hookPower * Time.deltaTime;
-            hook.color = Color.green;
+            progress += progressAdd * Time.deltaTime;
+            hook.sprite = inRangeHook;
         }
         else
         {
-            hookProgress -= hookProgressDegradationPower * Time.deltaTime;
-            hook.color = Color.yellow;
+            progress -= progressReduce * Time.deltaTime;
+            hook.sprite = outRangeHook;
         }
-        hookProgress = Mathf.Clamp(hookProgress, 0, 1);
-        progress.fillAmount = hookProgress;
+        updateProgress();
     }
     void moveHook()
     {
