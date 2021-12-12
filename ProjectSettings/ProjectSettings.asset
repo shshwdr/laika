@@ -577,10 +577,10 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    1: 
+    1: TMP_PRESENT
     4: 
     7: 
-    13: 
+    13: TMP_PRESENT
     14: 
     19: 
     21: 
