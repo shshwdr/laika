@@ -36,6 +36,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     public float errorMarginTime = .3f;
 
     int beatPerRound = 8;
+    int allowCurrentBeat = -1;
 
 
     Dictionary<int,int> playerInputBeats = new Dictionary<int, int> {};
@@ -43,8 +44,6 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     int lastBeat = 0;
     int currentBeat = 0;
 
-
-    int[] commandType;
     int commandCount = 0;
    // int inactiveBeatCount = 0;  //how many beats after command are inactive
 
@@ -71,6 +70,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     {
         shouldGetMoveInput = false;
     }
+
     public bool hasBeatInput
     {
         get
@@ -114,48 +114,54 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     {
 
 
-        allowedToBeat = true;
-        hasBeatInput = false;
-
-        //inactiveBeatCount = 0;
-
-        invokeTime = 60f / beatsPerMinute;
-
-        commandType = new int[4] { 0, 0, 0, 0 };
-        audioSourceSFX = GetComponent<AudioSource>();
-
-        beatFallTime = errorMarginTime;
-        StartCoroutine(startBeat2());
-        invokeTime = 60f / beatsPerMinute;
-        minigame.updateBeat(-1, playerInputBeats);
-
 
     }
 
-    IEnumerator startBeat2()
+    public void startGame()
     {
-        yield return new WaitForSeconds(0.5f);
+
+        allowedToBeat = false;
+
+        hasBeatInput = false;
+
+
+        invokeTime = 60f / beatsPerMinute;
+        // errorMarginTime = invokeTime * 2;
+
+        audioSourceSFX = GetComponent<AudioSource>();
+
+        beatFallTime = errorMarginTime;
+        StartCoroutine(startBeat());
+        minigame.updateBeat(-1, playerInputBeats);
+    }
+
+    IEnumerator startBeat()
+    {
+        yield return new WaitForSeconds(invokeTime*2);
 
         nextAllowBeat = (float)AudioSettings.dspTime - errorMarginTime / 2;
         nextPlayerMasterBeat = (float)AudioSettings.dspTime;
+        Debug.Log("next allow beat "+ nextAllowBeat + " " + nextPlayerMasterBeat);
     }
 
     void Update()
     {
+        if (minigame.isFinished)
+        {
+            return;
+        }
        // if (GameManager.Instance.isInGame)
         {
             double time = AudioSettings.dspTime;
-            if (nextAllowBeat != 0 || nextPlayerMasterBeat != 0)
+            //if (nextAllowBeat != 0 || nextPlayerMasterBeat != 0)
             {
 
-                if (time - 1.0f > nextAllowBeat)
+                if (time - invokeTime > nextAllowBeat)
                 {
                     // We are now approx. 1 second before the time at which the sound should play,
                     // so we will schedule it now in order for the system to have enough time
                     // to prepare the playback at the specified time. This may involve opening
                     // buffering a streamed file and should therefore take any worst-case delay into account.
-                    //audioSources[flip].clip = clips[flip];
-                    //audioSources[flip].PlayScheduled(nextEventTime);
 
                     //Debug.Log("Scheduled source " + flip + " to start at time " + nextEventTime);
                     AllowBeat();
@@ -165,7 +171,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
                     // Flip between two audio sources so that the loading process of one does not interfere with the one that's playing out
                     //flip = 1 - flip;
                 }
-                if (time - 1.0f > nextPlayerMasterBeat)
+                if (time - invokeTime > nextPlayerMasterBeat)
                 {
                     // We are now approx. 1 second before the time at which the sound should play,
                     // so we will schedule it now in order for the system to have enough time
@@ -173,11 +179,18 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
                     // buffering a streamed file and should therefore take any worst-case delay into account.
                     //audioSources[flip].clip = clips[flip];
                     //audioSourceBeat.PlayScheduled(nextPlayerMasterBeat);
-
-                    //Debug.Log("Scheduled source " + flip + " to start at time " + nextEventTime);
-                    PlayMasterBeat();
+                
                     // Place the next event 16 beats from here at a rate of 140 beats per minute
                     nextPlayerMasterBeat += invokeTime;
+                    if(time - invokeTime > nextPlayerMasterBeat)
+                    {
+
+                    }
+                    else
+                    {
+
+                        PlayMasterBeat();
+                    }
 
                     // Flip between two audio sources so that the loading process of one does not interfere with the one that's playing out
                     //flip = 1 - flip;
@@ -185,64 +198,28 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
             }
 
 
-            //if (audioSources[1].clip.length - audioSources[1].time < 1)
-            //{
-            //    audioSources[1].time = 0;
-            //    audioSources[1].Play();
-            //    for (int i = 1; i < audioSources.Length; i++)
-            //    {
-            //        if (audioSources[i].isPlaying)
-            //        {
-
-            //            audioSources[i].time = 0;
-            //            audioSources[i].Play();
-            //        }
-            //    }
-            //}
         }
-
-        //if (lastAllowBeat - audioSources[1].time >10)
-        //{
-        //    lastPlayerMasterBeat = errorMarginTime / 2f;
-        //    lastAllowBeat = 0;
-        //}
-        //    if (audioSources[1].time - lastAllowBeat >= invokeTime-0.05f)
-        //{
-        //    AllowBeat();
-        //    lastAllowBeat += invokeTime;
-        //}
-        //if (audioSources[1].time - lastPlayerMasterBeat >= invokeTime - 0.05f)
-        //{
-        //    PlayMasterBeat();
-        //    lastPlayerMasterBeat += invokeTime;
-        //}
-
-
-
 
 
         beatFallTime -= Time.deltaTime;
-        if (beatFallTime < 0f)
+        if (allowedToBeat && beatFallTime < 0f)
         {
 
-            //Debug.Log("cant beat now");
+            Debug.Log("cant beat now "+Time.deltaTime);
             allowedToBeat = false;
+
+            if (playerInputBeats.ContainsKey(allowCurrentBeat))
+            {
+                if (playerInputBeats[allowCurrentBeat] == 0)
+                {
+                    //audioSourceSFX.PlayOneShot(beatMissSigh);
+                    playerInputBeats[allowCurrentBeat] = 2;
+
+                    Debug.Log("miss beat " + currentBeat + " " + allowCurrentBeat);
+                    minigame.reduceScore();
+                }
+            }
             //Debug.Log("not allow!");
-            //if (commandType[3] != 0)
-            //{
-            //    bool commandMatched = SetInput(commandType);
-            //    if (commandMatched)
-            //    {
-            //        commandCount++;
-            //        inactiveBeatCount = 4;      //4 beats after input are inactive
-            //    }
-            //    else
-            //    {
-            //        inactiveBeatCount = 0;
-            //        commandCount = 0;
-            //    }
-            //    clearCommand();
-            //}
         }
 
         if (allowedToBeat && hasBeatInput && Input.anyKeyDown)
@@ -250,13 +227,12 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
            // Debug.Log("double beat not allowed");
             //hasBeatInput = false;
             lastBeatHasInput = true;
-            clearCommand();
         }
 
         GetDrumInputs();
 
 
-        if (!allowedToBeat && Input.GetKeyDown(KeyCode.Space))
+        if (!allowedToBeat && Input.GetKeyDown(KeyCode.UpArrow))
         {                     //mistiming beat with master beat
             if (minigame.shouldUpdate())
             {
@@ -264,90 +240,42 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
                 audioSourceSFX.PlayOneShot(beatMissSigh);
             }
 
-            //Debug.Log("mistiming");
-            clearCommand();
             commandCount = 0;
         }
 
-        //if (inactiveBeatCount > 0 && (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
-        //{               //interrupting command
-        //    clearCommand();
-        //    commandCount = 0;
-        //    //do physical motion stop here
-        //}
 
 
-        if (Time.time - beatActiveTime >= errorMarginTime && lastBeatHasInput && allowedToBeat)
-        {      //skipping a master beat
-            //Debug.Log("skipped");
-            lastBeatHasInput = true;
-           // lastBeat = currentBeat;
-            if (playerInputBeats.ContainsKey(currentBeat))
-            {
-                if(playerInputBeats[currentBeat] == 0)
-                {
-                    //audioSourceSFX.PlayOneShot(beatMissSigh);
-                      playerInputBeats[currentBeat] = 2;
-                    minigame.reduceScore();
-                }
-            }
-            clearCommand();
-            //addMoveInput(-1);
-            //clearMoveInput();
-        }
+        //if (Time.time - beatActiveTime >= errorMarginTime && !lastBeatHasInput && allowedToBeat)
+        //{      //skipping a master beat
+        //    //Debug.Log("skipped");
+        //    lastBeatHasInput = true;
+        //   // lastBeat = currentBeat;
+        //    if (playerInputBeats.ContainsKey(allowCurrentBeat))
+        //    {
+        //        if(playerInputBeats[allowCurrentBeat] == 0)
+        //        {
+        //            //audioSourceSFX.PlayOneShot(beatMissSigh);
+        //               playerInputBeats[allowCurrentBeat] = 2;
 
-        //if (currentDrumSprite != null)
-        //{
-        //    Image temporaryReference = currentDrumSprite;
-        //    temporaryReference.color = Color.Lerp(currentDrumSprite.color, Color.clear, spriteFlashTime);
-        //}
-
-
-        //continuos beats required to maintain fever
-        //if (commandCount >= 4)
-        //{
-        //    fever = true;
-        //    feverSprite.gameObject.SetActive(true);
-        //}
-
-        //if (inactiveBeatCount >= 0)
-        //{
-        //    feverTimeHold = Time.time;
-        //}
-        //if (Time.time - feverTimeHold >= ((errorMarginTime) * 2) + 1f && fever)
-        //{
-        //    commandCount = 0;
-        //    fever = false;
-        //    feverSprite.gameObject.SetActive(false);
+        //            Debug.Log("miss beat " + currentBeat + " " + allowCurrentBeat);
+        //            minigame.reduceScore();
+        //        }
+        //    }
         //}
     }
 
-    void clearCommand()
-    {
-
-        Array.Clear(commandType, 0, commandType.Length);
-        EventPool.Trigger("BeatClear");
-    }
-    int allowCurrentBeat = -1;
 
     void AllowBeat()
     {
-        allowCurrentBeat++;
-        if (allowCurrentBeat >= beatPerRound)
-        {
-            allowCurrentBeat = 0;
-        }
+        Debug.Log("allow beat " + currentBeat + Time.deltaTime);
         if (playerInputBeats.ContainsKey(currentBeat))
         {
+            allowCurrentBeat = currentBeat;
+
             beatFallTime = errorMarginTime;
 
-            //if (inactiveBeatCount == 0)
-            //    teamController.resetSpritesToIdle();
-
-            //Debug.Log("CAN BEAT");
             allowedToBeat = true;
-            //Debug.Log("allow!");
-            //inactiveBeatCount--;
+
             if (hasBeatInput)
             {
                 hasBeatInput = false;
@@ -356,27 +284,15 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     }
     void PlayMasterBeat()
     {
+        Debug.Log("play master beat "+ Time.deltaTime);
 
-
-
-        if (playerInputBeats.ContainsKey(currentBeat))
+        minigame.updateBeat(currentBeat, playerInputBeats);
+        if (minigame.shouldUpdate())
         {
-            //Debug.Log("can beat now");
-            //use map to find beat
-            //audioSourceSFX.PlayOneShot(commandMutedBeat);
-            //audioSourceSFX.PlayOneShot(mutedBeatClips[mutedBeats[mutedBeatId] - 1]);
-            // mutedBeatId++;
+            audioSourceSFX.PlayOneShot(masterBeat);
         }
-        else
-        {
 
-            minigame.updateBeat(currentBeat, playerInputBeats);
-            if (minigame.shouldUpdate())
-            {
-                audioSourceSFX.PlayOneShot(masterBeat);
-            }
-        }
-        lastBeat = currentBeat;
+        //lastBeat = currentBeat;
         currentBeat++;
         if (currentBeat >= beatPerRound)
         {
@@ -393,62 +309,47 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
             }
 
         }
-        //Debug.Log("dps time "+ AudioSettings.dspTime+" beat time " + (Time.time - startTime) + " music time " + audioSources[1].time+" diff " + (Time.time - startTime - audioSources[1].time));
-        //player.Move();
-        //EventPool.Trigger("Beat");
         
     }
 
-    //bool SetInput(int[] commandType)
-    //{
-    //    bool commandMatched = false;// teamController.GetInput(commandType, ref mutedBeats);
-    //    mutedBeatId = 0;
-    //    return commandMatched;
-    //}
-    //public List<int> moveInput = new List<int>();
-    //void addMoveInput(int i)
-    //{
-    //    if (shouldGetMoveInput)
-    //    {
-
-    //        moveInput.Add(i);
-    //        EventPool.Trigger("player move input");
-    //    }
-    //}
-    //public void clearMoveInput()
-    //{
-    //    moveInput.Clear();
-    //}
-
     void GetDrumInputs()
     {
-        //if (player.isConversation || !GameManager.Instance.isInGame || player.isDead)
-        //{
-        //    return;
-        //}
-
         if (allowedToBeat && !hasBeatInput)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
+
+                Debug.Log("beat " + currentBeat+" "+allowCurrentBeat);
                 hasBeatInput = true;
-                Debug.Log("beat!");
-                if (playerInputBeats.ContainsKey(allowCurrentBeat))
-                {
-                    playerInputBeats[allowCurrentBeat] = 1;
-                    minigame.addScore();
-                }
-                minigame.updateBeat(allowCurrentBeat, playerInputBeats);
                 if (minigame.shouldUpdate())
                 {
                     audioSourceSFX.PlayOneShot(commandMutedBeat);
                 }
+                if (playerInputBeats.ContainsKey(allowCurrentBeat))
+                {
+                    minigame.updateBeat(allowCurrentBeat, playerInputBeats);
+                    playerInputBeats[allowCurrentBeat] = 1;
+                    minigame.addScore();
+                }
+                else if (playerInputBeats.ContainsKey(allowCurrentBeat - 1))
+                {
+
+                    minigame.updateBeat(allowCurrentBeat - 1, playerInputBeats);
+                    playerInputBeats[allowCurrentBeat - 1] = 1;
+                    minigame.addScore();
+                }
+                else if (playerInputBeats.ContainsKey(allowCurrentBeat + 1))
+                {
+
+                    minigame.updateBeat(allowCurrentBeat + 1, playerInputBeats);
+                    playerInputBeats[allowCurrentBeat + 1] = 1;
+                    minigame.addScore();
+                }
+                else
+                {
+                    Debug.Log("I don't like this");
+                }
             }
-            //if (!Input.GetKey(KeyCode.Space) && (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)))
-            //{
-            //    clearCommand();
-            //    commandCount = 0;
-            //}
         }
         lastBeatHasInput = !hasBeatInput;
     }

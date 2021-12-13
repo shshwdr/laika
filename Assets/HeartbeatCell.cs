@@ -29,7 +29,7 @@ public class HeartbeatCell : MonoBehaviour
 
     public void initPlayer(bool isCurrent,int succeed)
     {
-        Debug.Log("init player " + isCurrent + " " + succeed);
+        //Debug.Log("init player " + isCurrent + " " + succeed);
         lineImage.sprite = isCurrent ? spike : flat;
         heartImage.gameObject.SetActive(true);
         wrongImage.gameObject.SetActive(false);

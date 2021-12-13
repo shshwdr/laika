@@ -11,7 +11,6 @@ public class TemporatureMiniGame : MiniGame
     public Sprite inRangeHook;
     public Sprite outRangeHook;
 
-    public TMP_Text buttonName;
     public Image fish;
     public Image hook;
 
@@ -39,7 +38,7 @@ public class TemporatureMiniGame : MiniGame
     // Start is called before the first frame update
     void Start()
     {
-        startString = "Start adjust temporature, press B to adjust";
+        startString = "Start adjust temporature, press Left Arrow to adjust";
         endString = "Adjust temporature succeed!";
         //startMinigame();
         resizeHook();
@@ -99,7 +98,7 @@ public class TemporatureMiniGame : MiniGame
     {
         float hookMin = -(50 - hookSize / 2);
         float hookMax = 50 - hookSize / 2;
-        if (Input.GetKey(KeyCode.B))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             hookPullVelocity += hookPullPower * Time.deltaTime;
         }else if (Mathf.Approximately(hookPosition, hookMin) || Mathf.Approximately(hookPosition, hookMax))

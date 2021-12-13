@@ -20,6 +20,12 @@ public class LogPanel : MonoBehaviour
         logLabel.color = color;
     }
 
+    public void updateColor(Color color)
+    {
+
+        logLabel.color = color;
+    }
+
     // Update is called once per frame
     void Update()
     {

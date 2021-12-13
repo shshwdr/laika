@@ -66,9 +66,15 @@ public class LogController : Singleton<LogController>
     }
     public void addLog(string str,Color color,bool immediate = false)
     {
+        foreach(Transform tran in content)
+        {
+            tran.GetComponent<LogPanel>().updateColor(Color.white);
+        }
+
+
         var logPrefab = Resources.Load<GameObject>("log");
         var go = Instantiate(logPrefab);
-        go.GetComponent<LogPanel>().init(str,color);
+        go.GetComponent<LogPanel>().init(str,Color.yellow);
         go.transform.SetParent(content,true);
 
         if (!immediate)

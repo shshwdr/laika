@@ -23,6 +23,7 @@ public class MiniGame:MonoBehaviour
         progress = 0;
 
         progressBar.fillAmount = progress;
+        //MinigameManager.Instance.startMiniGame(this);
 
     }
 

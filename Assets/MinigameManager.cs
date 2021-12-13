@@ -5,6 +5,13 @@ using UnityEngine;
 public class MinigameManager : Singleton<MinigameManager>
 {
     MiniGame[] miniGames;
+
+    int dialogId = 1;
+
+    MiniGame currentMiniGame;
+    int minigameId = 0;
+    List<int> minigameOrder = new List<int>() { 1, 0, 2, 0, 1, 2 };
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,19 +21,56 @@ public class MinigameManager : Singleton<MinigameManager>
 
     public IEnumerator waitAndRestart()
     {
-        yield return new WaitForSeconds(3f);
-        miniGames[Random.Range(0, miniGames.Length)].startMinigame();
+        yield return new WaitForSeconds(2f);
+        waitAndShowStartDialogue(miniGames[minigameOrder[minigameId]]);
+        yield return new WaitForSeconds(2f);
+        miniGames[minigameOrder[minigameId]].startMinigame();
+        minigameId++;
+        if(minigameId>= minigameOrder.Count)
+        {
+            minigameId = 0;
+        }
+
+    }
+
+    //public void startMiniGame(MiniGame game)
+    //{
+    //    StartCoroutine(waitAndShowStartDialogue(game));
+    //}
+
+
+
+    public void waitAndShowStartDialogue(MiniGame game)
+    {
+        PixelCrushers.DialogueSystem.DialogueManager.StartConversation("MinigameStart" + dialogId);
+        currentMiniGame = game;
+        MusicManager.Instance.playMiniGame(); 
+       // StartCoroutine(waitAndRestart());
 
     }
 
     public void currentGameFinished(MiniGame game)
     {
+        StartCoroutine(waitAndShowEndDialogue());
         StartCoroutine(waitAndRestart());
+
+        MusicManager.Instance.playNormal();
+    }
+
+    public IEnumerator waitAndShowEndDialogue()
+    {
+        yield return new WaitForSeconds(0.3f);
+        PixelCrushers.DialogueSystem.DialogueManager.StartConversation("MinigameEnd" + dialogId);
+        dialogId++;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            currentMiniGame.finishedGame();
+        }
     }
 }

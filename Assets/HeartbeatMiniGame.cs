@@ -14,6 +14,12 @@ public class HeartbeatMiniGame : MiniGame
     //    }
     //}
 
+    public override void startMinigame()
+    {
+        base.startMinigame();
+        GetComponent<RhythmGameManager>(). startGame();
+    }
+
     public void updateBeat(int currentBeat, Dictionary<int,int> beats)
     {
         if (!shouldUpdate())
@@ -74,7 +80,7 @@ public class HeartbeatMiniGame : MiniGame
     void Start()
     {
 
-        startString = "Start smooth heart beat, press Space when it hit the heart to smooth";
+        startString = "Start smooth heart beat, press Up Arrow when it hit the heart to smooth";
         endString = "Heartbeat smooth succeed!";
     }
 
