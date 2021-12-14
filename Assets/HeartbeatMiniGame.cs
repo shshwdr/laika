@@ -27,7 +27,7 @@ public class HeartbeatMiniGame : MiniGame
             return;
         }
         int j = 0;
-        Debug.Log("update beat " + currentBeat);
+        //Debug.Log("update beat " + currentBeat);
         for (int i = 0; i < heartbeats.Length; i++)
         {
             if (beats.ContainsKey(i))

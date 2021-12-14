@@ -23,6 +23,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     //AudioSource[] audioSources;
 
     float startTime;
+
     public AudioClip[] mutedBeatClips;
     int[] mutedBeats = new int[4];
     int mutedBeatId;
@@ -110,6 +111,13 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     float nextPlayerMasterBeat;
     float nextAllowBeat;
 
+    float originNextAllowBeat;
+    float originNextPlayerMasterBeat;
+
+
+    int totalBeatCountNextAllow;
+    int totalBeatCountNextPlayer;
+
     void Start()
     {
 
@@ -139,8 +147,10 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     {
         yield return new WaitForSeconds(invokeTime*2);
 
-        nextAllowBeat = (float)AudioSettings.dspTime - errorMarginTime / 2;
-        nextPlayerMasterBeat = (float)AudioSettings.dspTime;
+        originNextAllowBeat = (float)AudioSettings.dspTime - errorMarginTime / 2;
+        originNextPlayerMasterBeat = (float)AudioSettings.dspTime;
+        nextPlayerMasterBeat = originNextPlayerMasterBeat;
+        nextAllowBeat = originNextAllowBeat;
         Debug.Log("next allow beat "+ nextAllowBeat + " " + nextPlayerMasterBeat);
     }
 
@@ -153,6 +163,10 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
        // if (GameManager.Instance.isInGame)
         {
             double time = AudioSettings.dspTime;
+            if(originNextAllowBeat == 0)
+            {
+                return;
+            }
             //if (nextAllowBeat != 0 || nextPlayerMasterBeat != 0)
             {
 
@@ -166,7 +180,8 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
                     //Debug.Log("Scheduled source " + flip + " to start at time " + nextEventTime);
                     AllowBeat();
                     // Place the next event 16 beats from here at a rate of 140 beats per minute
-                    nextAllowBeat += invokeTime;
+                    totalBeatCountNextAllow++;
+                    nextAllowBeat = invokeTime* totalBeatCountNextAllow+originNextAllowBeat;
 
                     // Flip between two audio sources so that the loading process of one does not interfere with the one that's playing out
                     //flip = 1 - flip;
@@ -179,9 +194,10 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
                     // buffering a streamed file and should therefore take any worst-case delay into account.
                     //audioSources[flip].clip = clips[flip];
                     //audioSourceBeat.PlayScheduled(nextPlayerMasterBeat);
-                
+
                     // Place the next event 16 beats from here at a rate of 140 beats per minute
-                    nextPlayerMasterBeat += invokeTime;
+                    totalBeatCountNextPlayer++;
+                    nextPlayerMasterBeat = invokeTime * totalBeatCountNextPlayer + originNextPlayerMasterBeat;
                     if(time - invokeTime > nextPlayerMasterBeat)
                     {
 
@@ -267,7 +283,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
 
     void AllowBeat()
     {
-        Debug.Log("allow beat " + currentBeat + Time.deltaTime);
+        //Debug.Log("allow beat " + currentBeat + Time.deltaTime);
         if (playerInputBeats.ContainsKey(currentBeat))
         {
             allowCurrentBeat = currentBeat;
@@ -284,7 +300,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     }
     void PlayMasterBeat()
     {
-        Debug.Log("play master beat "+ Time.deltaTime);
+        //Debug.Log("play master beat "+ Time.deltaTime);
 
         minigame.updateBeat(currentBeat, playerInputBeats);
         if (minigame.shouldUpdate())

@@ -1,3 +1,4 @@
+using Pool;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class MinigameManager : Singleton<MinigameManager>
     {
         miniGames = GetComponentsInChildren<MiniGame>();
         StartCoroutine(waitAndRestart());
+
+        EventPool.OptIn("finishedMovieText", restartAfterMovie);
     }
 
     public IEnumerator waitAndRestart()
@@ -51,19 +54,39 @@ public class MinigameManager : Singleton<MinigameManager>
 
     public void currentGameFinished(MiniGame game)
     {
-        StartCoroutine(waitAndShowEndDialogue());
-        StartCoroutine(waitAndRestart());
-
         MusicManager.Instance.playNormal();
+        StartCoroutine(waitAndShowEndDialogue());
+
     }
 
     public IEnumerator waitAndShowEndDialogue()
     {
         yield return new WaitForSeconds(0.3f);
         PixelCrushers.DialogueSystem.DialogueManager.StartConversation("MinigameEnd" + dialogId);
-        dialogId++;
+        yield return new WaitForSeconds(0.3f);
+        if (MovieTextController.Instance.showTextLabel("poemEnd" + dialogId))
+        {
+            dialogId++;
+        }
+        else
+        {
+
+            dialogId++;
+
+
+            StartCoroutine(waitAndRestart());
+        }
+
+
 
     }
+
+    public void restartAfterMovie()
+    {
+
+        StartCoroutine(waitAndRestart());
+    }
+
 
     // Update is called once per frame
     void Update()
