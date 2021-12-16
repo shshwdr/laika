@@ -76,6 +76,7 @@ public class LogController : Singleton<LogController>
         var go = Instantiate(logPrefab);
         go.GetComponent<LogPanel>().init(str,Color.yellow);
         go.transform.SetParent(content,true);
+        go.GetComponent<RectTransform>() .localScale = Vector3.one;
 
         if (!immediate)
         {

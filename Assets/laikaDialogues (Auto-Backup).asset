@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 935899b62f48ae5498594680ed17d133, type: 3}
-  m_Name: laikaDialogues
+  m_Name: laikaDialogues (Auto-Backup)
   m_EditorClassIdentifier: 
   version: 
   author: 
@@ -850,8 +850,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 25
-        y: 143
+        x: 88
+        y: 142
         width: 160
         height: 30
     - id: 2
@@ -1445,8 +1445,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 81.94029
-        y: 186.04471
+        x: 31.194046
+        y: 102.46268
         width: 160
         height: 30
     - id: 5
@@ -1516,8 +1516,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 77.95523
-        y: 245.98505
+        x: 30.194054
+        y: 199.7164
         width: 160
         height: 30
     - id: 6
@@ -1586,8 +1586,8 @@ MonoBehaviour:
           m_Calls: []
       canvasRect:
         serializedVersion: 2
-        x: 77.95523
-        y: 327.32828
+        x: 27.208992
+        y: 290.01486
         width: 160
         height: 30
     entryGroups: []

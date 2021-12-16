@@ -7,7 +7,7 @@ public class MinigameManager : Singleton<MinigameManager>
 {
     MiniGame[] miniGames;
 
-    int dialogId = 1;
+   public  int dialogId = 2;
 
     public List<GameObject> miniGameObjects;
 
@@ -35,12 +35,17 @@ public class MinigameManager : Singleton<MinigameManager>
 
         EventPool.OptIn("finishedMovieText", restartAfterMovie);
     }
-
+    void EndGame()
+    {
+        StartAndEndLogic.Instance.end();
+    }
     public IEnumerator waitAndRestart()
     {
 
         if(minigameId >= minigameOrder.Count)
         {
+            yield return new WaitForSeconds(2f);
+            EndGame();
             yield break;
         }
         yield return new WaitForSeconds(2f);
