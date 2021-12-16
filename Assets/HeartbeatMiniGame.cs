@@ -14,6 +14,12 @@ public class HeartbeatMiniGame : MiniGame
     //    }
     //}
 
+    public override void realFinishedGame()
+    {
+        base.realFinishedGame();
+        GetComponent<RhythmGameManager>().resetGame();
+    }
+
     public override void startMinigame()
     {
         base.startMinigame();
@@ -82,6 +88,8 @@ public class HeartbeatMiniGame : MiniGame
 
         startString = "Start smooth heart beat, press Up Arrow when it hit the heart to smooth";
         endString = "Heartbeat smooth succeed!";
+        keyArrow = "Up Arrow";
+        gameName = "Heartbeat";
     }
 
     // Update is called once per frame

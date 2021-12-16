@@ -10,8 +10,15 @@ public class MiniGame:MonoBehaviour
     public float progress;
     public string startString;
     public string endString;
+    public string keyArrow;
+    public string gameName;
     [SerializeField] protected float progressAdd = 0.3f;
     [SerializeField] protected float progressReduce = 0.1f;
+
+    public bool canFinish()
+    {
+        return progress >= 0.99f;
+    }
     public bool shouldUpdate()
     {
         return !isFinished;
@@ -19,7 +26,6 @@ public class MiniGame:MonoBehaviour
     public virtual void  startMinigame()
     {
         isFinished = false;
-        LogController.Instance.addLog(startString);
         progress = 0;
 
         progressBar.fillAmount = progress;
@@ -40,9 +46,13 @@ public class MiniGame:MonoBehaviour
     public virtual void finishedGame()
     {
 
-        isFinished = true;
-        LogController.Instance.addLog(endString);
         MinigameManager.Instance.currentGameFinished(this);
+    }
+
+    public virtual void realFinishedGame()
+    {
+
+        isFinished = true;
     }
 
     public virtual void increaseDifficulty()

@@ -42,8 +42,10 @@ public class BreathMinigame : MiniGame
     // Start is called before the first frame update
     void Start()
     {
-        startString = "Start indicate when to breath, press right arrow to indicate";
+        startString = "Start indicate when to breath, press Right Arrow to indicate";
         endString = "Indicate breath succeed!";
+        keyArrow = "Right Arrow";
+        gameName = "Breath";
         resizeHook();
         fishDestination = 45;
         //startMinigame();

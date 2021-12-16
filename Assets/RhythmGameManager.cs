@@ -154,6 +154,13 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
         Debug.Log("next allow beat "+ nextAllowBeat + " " + nextPlayerMasterBeat);
     }
 
+    public void resetGame()
+    {
+        originNextAllowBeat = 0;
+        totalBeatCountNextAllow = 0;
+        totalBeatCountNextPlayer = 0;
+    }
+
     void Update()
     {
         if (minigame.isFinished)
@@ -228,7 +235,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
             {
                 if (playerInputBeats[allowCurrentBeat] == 0)
                 {
-                    //audioSourceSFX.PlayOneShot(beatMissSigh);
+                    audioSourceSFX.PlayOneShot(beatMissSigh);
                     playerInputBeats[allowCurrentBeat] = 2;
 
                     Debug.Log("miss beat " + currentBeat + " " + allowCurrentBeat);
@@ -254,6 +261,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
             {
 
                 audioSourceSFX.PlayOneShot(beatMissSigh);
+                minigame.reduceScore();
             }
 
             commandCount = 0;

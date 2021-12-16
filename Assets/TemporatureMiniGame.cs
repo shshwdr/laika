@@ -40,6 +40,8 @@ public class TemporatureMiniGame : MiniGame
     {
         startString = "Start adjust temporature, press Left Arrow to adjust";
         endString = "Adjust temporature succeed!";
+        keyArrow = "Left Arrow";
+        gameName = "Temporature";
         //startMinigame();
         resizeHook();
     }

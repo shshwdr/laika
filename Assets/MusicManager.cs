@@ -28,6 +28,11 @@ public class MusicManager : Singleton<MusicManager>
         nextAudio.Play();
     }
 
+    public void playFinal()
+    {
+        playAudio(2);
+    }
+
     public void playNormal()
     {
         playAudio(0);
