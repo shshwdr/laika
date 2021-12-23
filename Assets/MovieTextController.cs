@@ -125,5 +125,13 @@ public class MovieTextController : Singleton<MovieTextController>
                 finish();
             }
         }
+
+        if (CheatManager.Instance.canCheat)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                finish();
+            }
+        }
     }
 }

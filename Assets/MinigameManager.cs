@@ -142,7 +142,16 @@ public class MinigameManager : Singleton<MinigameManager>
 
                 MusicManager.Instance.playNormal();
             }
-            StartCoroutine(waitAndShowEndDialogue());
+
+            if (MovieTextController.Instance.showTextLabel("poemEnd" + dialogId))
+            {
+            }
+            else
+            {
+
+                StartCoroutine(waitAndShowEndDialogue());
+
+            }
 
             minigameId++;
             //if (minigameId >= minigameOrder.Count)
@@ -158,19 +167,11 @@ public class MinigameManager : Singleton<MinigameManager>
         yield return new WaitForSeconds(0.3f);
         PixelCrushers.DialogueSystem.DialogueManager.StartConversation("MinigameEnd" + dialogId);
         yield return new WaitForSeconds(0.3f);
-        if (MovieTextController.Instance.showTextLabel("poemEnd" + dialogId))
-        {
-            dialogId++;
-        }
-        else
-        {
+        
 
-            dialogId++;
+        dialogId++;
 
-
-            StartCoroutine(waitAndRestart());
-        }
-
+        StartCoroutine(waitAndRestart());
 
 
     }
@@ -178,7 +179,7 @@ public class MinigameManager : Singleton<MinigameManager>
     public void restartAfterMovie()
     {
 
-        StartCoroutine(waitAndRestart());
+        StartCoroutine(waitAndShowEndDialogue());
     }
 
 

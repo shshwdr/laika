@@ -18,6 +18,15 @@ public class MiniGame:MonoBehaviour
     [SerializeField] protected float progressAdd = 0.3f;
     [SerializeField] protected float progressReduce = 0.1f;
 
+    protected AudioSource sfx;
+
+    public AudioClip win;
+
+    private void Awake()
+    {
+
+        sfx = GetComponent<AudioSource>(); 
+    }
     public bool canFinish()
     {
         return progress >= 0.99f;
@@ -50,6 +59,7 @@ public class MiniGame:MonoBehaviour
     {
 
         MinigameManager.Instance.currentGameFinished(this);
+        sfx.PlayOneShot(win);
     }
 
     public virtual void realFinishedGame()

@@ -32,7 +32,8 @@ public class TemporatureMiniGame : MiniGame
     [SerializeField] float hookPullPower = 0.01f;
     [SerializeField] float hookGravityPower = 0.005f;
 
-
+    public AudioClip up;
+    public AudioClip down;
 
 
     // Start is called before the first frame update
@@ -79,6 +80,24 @@ public class TemporatureMiniGame : MiniGame
     }
 
 
+    void updateSFX(bool isUp)
+    {
+        if(isUp && sfx.clip != up)
+        {
+
+            sfx.Stop();
+            sfx.clip = up;
+            sfx.Play();
+        }
+        else if(!isUp && sfx.clip!=down)
+        {
+
+            sfx.Stop();
+            sfx.clip = down;
+            sfx.Play();
+        }
+    }
+
     void progressCheck()
     {
         float hookMin = hookPosition - hookSize/2;
@@ -87,11 +106,17 @@ public class TemporatureMiniGame : MiniGame
         {
             progress += progressAdd * Time.deltaTime;
             hook.sprite = inRangeHook;
+
+            updateSFX(true);
         }
         else
         {
             progress -= progressReduce * Time.deltaTime;
             hook.sprite = outRangeHook;
+            if (progress != 0)
+            {
+                updateSFX(false);
+            }
         }
         updateProgress();
     }
@@ -99,7 +124,7 @@ public class TemporatureMiniGame : MiniGame
     {
         float hookMin = -(50 - hookSize / 2);
         float hookMax = 50 - hookSize / 2;
-        if (KeyBindingManager.GetKeyDown(KeyAction.left))
+        if (KeyBindingManager.GetKey(KeyAction.left))
         {
             hookPullVelocity += hookPullPower * Time.deltaTime;
         }else if (Mathf.Approximately(hookPosition, hookMin) || Mathf.Approximately(hookPosition, hookMax))
@@ -123,6 +148,24 @@ public class TemporatureMiniGame : MiniGame
         {
             fishTimer = Random.value * timerMultiplicator;
             fishDestination = Random.value * 95f - 50;
+
+            //if(fishTimer> 1f)
+            //{
+            //    if(fishDestination > fishPosition)
+            //    {
+            //        sfx.Stop();
+            //        sfx.clip = up;
+            //        sfx.Play();
+            //    }
+            //    else
+            //    {
+
+            //        sfx.Stop();
+            //        sfx.clip = down;
+            //        sfx.Play();
+            //    }
+            //}
+
         }
         fishPosition = Mathf.SmoothDamp(fishPosition, fishDestination, ref fishSpeed, smoothMotion);
         fish.rectTransform.localPosition = new Vector3(0, fishPosition);

@@ -69,11 +69,6 @@ public class HeartbeatMiniGame : MiniGame
         updateProgress();
     }
 
-    private void Awake()
-    {
-        heartbeats = GetComponentsInChildren<HeartbeatCell>();
-    }
-
     //public void playerBeat(bool succeed,int id)
     //{
 
@@ -85,6 +80,7 @@ public class HeartbeatMiniGame : MiniGame
     // Start is called before the first frame update
     void Start()
     {
+        heartbeats = GetComponentsInChildren<HeartbeatCell>();
         startString = "Start smooth heart beat, press "+ keyArrow+" when it hit the heart to smooth";
         endString = "Heartbeat smooth succeed!";
         gameName = "Heartbeat";

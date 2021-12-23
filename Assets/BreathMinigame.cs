@@ -38,6 +38,8 @@ public class BreathMinigame : MiniGame
     public Image correctImage;
     public Image wrongImage;
 
+    public AudioClip correct;
+    public AudioClip wrong;
 
     // Start is called before the first frame update
     void Start()
@@ -144,11 +146,13 @@ public class BreathMinigame : MiniGame
         {
             progress += progressAdd;
             correctImage.gameObject.SetActive(true);
+            sfx.PlayOneShot(correct);
         }
         else
         {
             progress -= progressReduce;
             wrongImage.gameObject.SetActive(true);
+            sfx.PlayOneShot(wrong);
         }
         isRoundFinished = true;
         updateProgress();

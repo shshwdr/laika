@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CheatManager : Singleton<CheatManager>
 {
+    public bool canCheat = true;
     public bool hasUnlimitResource;
     // Start is called before the first frame update
     void Start()
