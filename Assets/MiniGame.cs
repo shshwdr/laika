@@ -10,7 +10,10 @@ public class MiniGame:MonoBehaviour
     public float progress;
     public string startString;
     public string endString;
-    public string keyArrow;
+    public KeyAction keyAction;
+    public string keyArrow { get {
+            return KeyBindingManager.keyDict[keyAction].ToString();
+        } }
     public string gameName;
     [SerializeField] protected float progressAdd = 0.3f;
     [SerializeField] protected float progressReduce = 0.1f;

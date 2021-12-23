@@ -255,7 +255,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
         GetDrumInputs();
 
 
-        if (!allowedToBeat && Input.GetKeyDown(KeyCode.UpArrow))
+        if (!allowedToBeat && KeyBindingManager.GetKeyDown(KeyAction.up))
         {                     //mistiming beat with master beat
             if (minigame.shouldUpdate())
             {
@@ -340,7 +340,7 @@ public class RhythmGameManager : Singleton<RhythmGameManager>
     {
         if (allowedToBeat && !hasBeatInput)
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (KeyBindingManager.GetKeyDown(KeyAction.up))
             {
 
                 Debug.Log("beat " + currentBeat+" "+allowCurrentBeat);

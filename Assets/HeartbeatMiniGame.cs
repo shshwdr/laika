@@ -85,7 +85,6 @@ public class HeartbeatMiniGame : MiniGame
     // Start is called before the first frame update
     void Start()
     {
-        keyArrow = "Up Arrow / W";
         startString = "Start smooth heart beat, press "+ keyArrow+" when it hit the heart to smooth";
         endString = "Heartbeat smooth succeed!";
         gameName = "Heartbeat";
