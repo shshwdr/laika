@@ -35,12 +35,14 @@ public class MusicManager : Singleton<MusicManager>
 
     public void playNormal()
     {
-        playAudio(0);
+        playAudio(3);
     }
     public void playMiniGame()
     {
         playAudio(1);
     }
+
+
     // Start is called before the first frame update
     void Start()
     {

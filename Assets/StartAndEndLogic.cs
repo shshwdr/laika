@@ -49,8 +49,8 @@ public class StartAndEndLogic : Singleton<StartAndEndLogic>
     void Start()
     {
         StartCoroutine(startTextMoving());
-        
-        //StartCoroutine(endTextMoving());
+       // startPanel.gameObject.SetActive(false);
+       // end();
     }
 
     public void end()
@@ -159,7 +159,7 @@ public class StartAndEndLogic : Singleton<StartAndEndLogic>
         }
 
         minigameManager.SetActive(true);
-
+        MusicManager.Instance.playNormal();
 
         //Time.timeScale = 0;
         //var text = Resources.Load<TextAsset>("poem/start");
@@ -192,9 +192,11 @@ public class StartAndEndLogic : Singleton<StartAndEndLogic>
         endText.text = text.text;
         endPanel.gameObject.SetActive(true);
         endPanel.color = new Color(endPanel.color.r, endPanel.color.g, endPanel.color.b, 0);
+
+        yield return new WaitForSeconds(0.1f);
         DOTween.To(() => endPanel.color, x => endPanel.color = x, new Color(endPanel.color.r, endPanel.color.g, endPanel.color.b, 1), startHideTime).SetUpdate(true);
         //yield return new WaitForSeconds(startHideTime);
-        var height = endText.rectTransform.rect.height;
+        var height = 540 + endText.rectTransform.rect.height;
         DOTween.To(() => endText.rectTransform.anchoredPosition, x => endText.rectTransform.anchoredPosition = x, new Vector2(0, height), endScrollSpeed*height).SetEase(Ease.Linear);
         yield return new WaitForSeconds(endWaitTime);
         endButton.gameObject.SetActive(true);

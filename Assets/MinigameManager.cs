@@ -31,9 +31,14 @@ public class MinigameManager : Singleton<MinigameManager>
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(waitAndRestart());
 
+        StartCoroutine(waitAndRestart());
         EventPool.OptIn("finishedMovieText", restartAfterMovie);
+    }
+
+    public void startGame()
+    {
+
     }
     void EndGame()
     {
